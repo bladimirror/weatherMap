@@ -3,57 +3,58 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 *{
-	margin: 0;
-	padding: 0;
+	margin: 0em;
+	padding: 0em;
 }
 
 #container {
 	width: 100%;
 	height: auto;
-	padding: 0px;
+	padding: 0em;
 }
 
 	#location {
 		width: 100%;
 		height: auto;
-		padding: 0;
+		padding: 0em;
 	}
 
 	#weather {
 		width: 100%;
-		height: 200px;
-		padding: 10px;
+		height: 12.5em;
+		padding: 0.625em;
 	}
 		ul {
-			font-size: 25px;
+			font-size: 1.563em;
     		font-family: "Trebuchet MS", Helvetica, sans-serif;
     		color: black;
 		}
 	html, body {
         height: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0em;
+        padding: 0em;
     }
     
     #basicMap {
-        height: 400px;
+        height: 25em;
         width: auto;
     }
 
 	#city {
 		display: block;
 		width: 100%;
-		height: 34px;
-		padding: 6px 12px;
-		font-size: 14px;
-		line-height: 1.42857143;
+		height: 2.125em;
+		postion: absolute;
+		padding: 0.375em 0.750em;
+		font-size: 0.875em;
+		line-height: 1.42857143em;
 		color: #555;
 		background-color: #fff;
 		background-image: none;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-			-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-		  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+		border: 0.063em solid #ccc;
+		border-radius: 0.250em;
+			-webkit-box-shadow: inset 0 0.063em 0.063em rgba(0, 0, 0, .075);
+		  box-shadow: inset 0 0.063em 0.063em rgba(0, 0, 0, .075);
 			-webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
 			-o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 		  	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -61,32 +62,32 @@
 		#city:focus {
 		  border-color: #66afe9;
 		  outline: 0;
-		  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-		          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+		  -webkit-box-shadow: inset 0 0.063em 0.063em rgba(0,0,0,.075), 0 0 0.5em rgba(102, 175, 233, .6);
+		          box-shadow: inset 0 0.063em 0.063em rgba(0,0,0,.075), 0 0 0.5em rgba(102, 175, 233, .6);
 		}
 
 	#countries {
-		width: 500px;
-		height: 35px;
+		width: 100%;
+		height: 2.188em;
 		display: block;
-		margin-bottom: 10px;
-		font-size: 20px;
+		margin-bottom: 0.625em;
+		font-size: 1.250em;
     	font-family: "Trebuchet MS", Helvetica, sans-serif;
 
-		min-width: 160px;
-		padding: 5px 0;
-		margin: 2px 0 0;
-		font-size: 14px;
+		min-width: 10em;
+		padding: 0.313em 0;
+		margin: 0.125em 0 0;
+		font-size: 0.875em;
 		color: black;
 		text-align: left;
 		list-style: none;
 		background-color: #fff;
 			-webkit-background-clip: padding-box;
 			  background-clip: padding-box;
-		border: 1px solid #ccc;
-		border: 1px solid rgba(0, 0, 0, .15);
-		border-radius: 4px;
-			-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-			  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+		border: 0.063em solid #ccc;
+		border: 0.063em solid rgba(0, 0, 0, .15);
+		border-radius: 0.250em;
+			-webkit-box-shadow: 0 0.375em 0.750em rgba(0, 0, 0, .175);
+			  box-shadow: 0 0.375em 0.750em rgba(0, 0, 0, .175);
 	}
 		
