@@ -115,28 +115,28 @@
 		    				weather += "<li> Wind Speed: " + Math.floor(res.wind.speed) + " mph</li>";
 		    				
 			    				if (res.wind.deg == 0 || res.wind.deg == 360){
-			    					weather += "<li> Wind Direction: East </li>";
+			    					weather += "<li> Wind Direction: West </li>";
 			    				}
 			    				else if (res.wind.deg == 90){
 			    					weather += "<li> Wind Direction: North </li>";
 			    				}
 			    				else if (res.wind.deg == 180){
-			    					weather += "<li> Wind Direction: West </li>";
+			    					weather += "<li> Wind Direction: East </li>";
 			    				}
 			    				else if (res.wind.deg == 270){
 			    					weather += "<li> Wind Direction: South </li>";
 			    				}
 			    				else if (res.wind.deg > 0 && res.wind.deg < 90){
-			    					weather += "<li> Wind Direction: North-East </li>";
-			    				}
-			    				else if (res.wind.deg > 90 && res.wind.deg < 180){
 			    					weather += "<li> Wind Direction: North-West </li>";
 			    				}
+			    				else if (res.wind.deg > 90 && res.wind.deg < 180){
+			    					weather += "<li> Wind Direction: North-East </li>";
+			    				}
 			    				else if (res.wind.deg > 180 && res.wind.deg < 270){
-			    					weather += "<li> Wind Direction: South-West </li>";
+			    					weather += "<li> Wind Direction: South-East </li>";
 			    				}
 			    				else if (res.wind.deg > 270 && res.wind.deg < 360){
-			    					weather += "<li> Wind Direction: South-East </li>";
+			    					weather += "<li> Wind Direction: South-West </li>";
 			    				}
 		    				
 		    				weather += "<li> Humidity: " + res.main.humidity + "% </li>";
