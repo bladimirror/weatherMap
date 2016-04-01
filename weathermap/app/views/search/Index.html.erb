@@ -41,7 +41,7 @@
         			var city_value = $('#city').val();
         			var country = $('#countries').val();
         			var API_CALL = String(city_value + ',' + country + API_KEY);
-	        		var weather = "<div id='weather_info'> ";
+	        		var weather = "";
 
 		        	console.log(API_CALL);
 
@@ -141,7 +141,7 @@
 		    				
 		    				weather += "<li> Humidity: " + res.main.humidity + "% </li>";
 		    				weather += "</ul>"
-		    				weather += "<br><hr><br></div>"
+		    				weather += "<br><hr><br>"
 
 		    				console.log("Printing results...");
 		    				console.log(weather);
