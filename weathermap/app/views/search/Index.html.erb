@@ -32,125 +32,126 @@
         
         <!--START API CALL SCRIPT-->
         <script>
+        	function lazyLoad() {
+	        	$(document).ready(function() {
+	        		// OPEN WEATHER MAP API KEY //
+	        		var API_KEY = "?id=524901&APPID=3c9eb1af46d98362fdd2af6418d60735&type=like&mode=json&units=imperial";
 
-        	$(document).ready(function() {
-        		// OPEN WEATHER MAP API KEY //
-        		var API_KEY = "?id=524901&APPID=3c9eb1af46d98362fdd2af6418d60735&type=like&mode=json&units=imperial";
+	        		$('form').submit(function weather_data(){
+	        			var city_value = $('#city').val();
+	        			var country = $('#countries').val();
+	        			var API_CALL = String(city_value + ',' + country + API_KEY);
+		        		var weather = "";
 
-        		$('form').submit(function weather_data(){
-        			var city_value = $('#city').val();
-        			var country = $('#countries').val();
-        			var API_CALL = String(city_value + ',' + country + API_KEY);
-	        		var weather = "";
+			        	console.log(API_CALL);
 
-		        	console.log(API_CALL);
+			        	console.log("Starting API call...");
 
-		        	console.log("Starting API call...");
+		    			$.get("http://api.openweathermap.org/data/2.5/weather?q=" + API_CALL, function(res){
+		    				console.log(res);
+		    				var lat_city = res.coord.lat; //city lattitude
+		    				var lon_city = res.coord.lon; //city longitude
 
-	    			$.get("http://api.openweathermap.org/data/2.5/weather?q=" + API_CALL, function(res){
-	    				console.log(res);
-	    				var lat_city = res.coord.lat; //city lattitude
-	    				var lon_city = res.coord.lon; //city longitude
+		    				console.log("lat " + lat_city + " lon " + lon_city);
 
-	    				console.log("lat " + lat_city + " lon " + lon_city);
+		    				/* // GOOGLE MAPS JAVASCRIPT API //
+						    	var map;
+								map = new google.maps.Map(document.getElementById('basicMap'), {
+								  center: {lat: lat_city, lng: lon_city},
+								  zoom: 4
+								});
+							*/
 
-	    				/* // GOOGLE MAPS JAVASCRIPT API //
-					    	var map;
-							map = new google.maps.Map(document.getElementById('basicMap'), {
-							  center: {lat: lat_city, lng: lon_city},
-							  zoom: 4
-							});
-						*/
+			    			// OPEN WEATHER MAP LAYERS API //
+			    			console.log("Creating map layers...");
+			    			$( "#basicMap" ).empty();
+							    //Center of map
+							    var lonlat = new OpenLayers.LonLat(lon_city, lat_city);
+							    console.log(lonlat);
+							    
+							    // if  you use WGS 1984 coordinate you should  convert to mercator
+								var lonlat_mercator = lonlat.transform(
+									new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+									new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
+								);
+							        
+							    var map = new OpenLayers.Map("basicMap");
+							    // Create overlays
+							    //  OSM
+							        var mapnik = new OpenLayers.Layer.OSM();
+							    var layer_cloud = new OpenLayers.Layer.XYZ(
+							        "clouds",
+							        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+							        {
+							            isBaseLayer: false,
+							            opacity: 0.2,
+							            sphericalMercator: true
 
-		    			// OPEN WEATHER MAP LAYERS API //
-		    			console.log("Creating map layers...");
-		    			$( "#basicMap" ).empty();
-						    //Center of map
-						    var lonlat = new OpenLayers.LonLat(lon_city, lat_city);
-						    console.log(lonlat);
-						    
-						    // if  you use WGS 1984 coordinate you should  convert to mercator
-							var lonlat_mercator = lonlat.transform(
-								new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-								new OpenLayers.Projection("EPSG:900913") // to Spherical Mercator Projection
-							);
-						        
-						    var map = new OpenLayers.Map("basicMap");
-						    // Create overlays
-						    //  OSM
-						        var mapnik = new OpenLayers.Layer.OSM();
-						    var layer_cloud = new OpenLayers.Layer.XYZ(
-						        "clouds",
-						        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
-						        {
-						            isBaseLayer: false,
-						            opacity: 0.2,
-						            sphericalMercator: true
+							        }
+							    );
 
-						        }
-						    );
+							    var layer_precipitation = new OpenLayers.Layer.XYZ(
+							        "precipitation",
+							        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+							        {
+							            isBaseLayer: false,
+							            opacity: 0.2,
+							            sphericalMercator: true
+							        }
+							    );
 
-						    var layer_precipitation = new OpenLayers.Layer.XYZ(
-						        "precipitation",
-						        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
-						        {
-						            isBaseLayer: false,
-						            opacity: 0.2,
-						            sphericalMercator: true
-						        }
-						    );
+							    map.addLayers([mapnik, layer_precipitation, layer_cloud]);
+							    map.setCenter(lonlat_mercator, 6);
 
-						    map.addLayers([mapnik, layer_precipitation, layer_cloud]);
-						    map.setCenter(lonlat_mercator, 6);
+							// OPEN WEATHER INFORMATION //
+								var weather_slice = res.weather[0].description.charAt(0).toUpperCase() + res.weather[0].description.slice(1);
+								var city_slice = city_value.charAt(0).toUpperCase() + city_value.slice(1);
 
-						// OPEN WEATHER INFORMATION //
-							var weather_slice = res.weather[0].description.charAt(0).toUpperCase() + res.weather[0].description.slice(1);
-							var city_slice = city_value.charAt(0).toUpperCase() + city_value.slice(1);
+			    				weather += "<ul>";
+			    				weather += "<li>" + weather_slice + " in ";
+			    				weather += city_slice;
+			    				weather += ',' + " with " + res.clouds.all + "% cloud cover </li>";
+			    				weather += "<li> Current Temperature: " + Math.floor(res.main.temp_max) + "F </li>";
+			    				weather += "<li> Wind Speed: " + Math.floor(res.wind.speed) + " mph</li>";
+			    				
+				    				if (res.wind.deg == 0 || res.wind.deg == 360){
+				    					weather += "<li> Wind Direction: West </li>";
+				    				}
+				    				else if (res.wind.deg == 90){
+				    					weather += "<li> Wind Direction: North </li>";
+				    				}
+				    				else if (res.wind.deg == 180){
+				    					weather += "<li> Wind Direction: East </li>";
+				    				}
+				    				else if (res.wind.deg == 270){
+				    					weather += "<li> Wind Direction: South </li>";
+				    				}
+				    				else if (res.wind.deg > 0 && res.wind.deg < 90){
+				    					weather += "<li> Wind Direction: North-West </li>";
+				    				}
+				    				else if (res.wind.deg > 90 && res.wind.deg < 180){
+				    					weather += "<li> Wind Direction: North-East </li>";
+				    				}
+				    				else if (res.wind.deg > 180 && res.wind.deg < 270){
+				    					weather += "<li> Wind Direction: South-East </li>";
+				    				}
+				    				else if (res.wind.deg > 270 && res.wind.deg < 360){
+				    					weather += "<li> Wind Direction: South-West </li>";
+				    				}
+			    				
+			    				weather += "<li> Humidity: " + res.main.humidity + "% </li>";
+			    				weather += "</ul>"
+			    				weather += "<br><hr><br>"
 
-		    				weather += "<ul>";
-		    				weather += "<li>" + weather_slice + " in ";
-		    				weather += city_slice;
-		    				weather += ',' + " with " + res.clouds.all + "% cloud cover </li>";
-		    				weather += "<li> Current Temperature: " + Math.floor(res.main.temp_max) + "F </li>";
-		    				weather += "<li> Wind Speed: " + Math.floor(res.wind.speed) + " mph</li>";
-		    				
-			    				if (res.wind.deg == 0 || res.wind.deg == 360){
-			    					weather += "<li> Wind Direction: West </li>";
-			    				}
-			    				else if (res.wind.deg == 90){
-			    					weather += "<li> Wind Direction: North </li>";
-			    				}
-			    				else if (res.wind.deg == 180){
-			    					weather += "<li> Wind Direction: East </li>";
-			    				}
-			    				else if (res.wind.deg == 270){
-			    					weather += "<li> Wind Direction: South </li>";
-			    				}
-			    				else if (res.wind.deg > 0 && res.wind.deg < 90){
-			    					weather += "<li> Wind Direction: North-West </li>";
-			    				}
-			    				else if (res.wind.deg > 90 && res.wind.deg < 180){
-			    					weather += "<li> Wind Direction: North-East </li>";
-			    				}
-			    				else if (res.wind.deg > 180 && res.wind.deg < 270){
-			    					weather += "<li> Wind Direction: South-East </li>";
-			    				}
-			    				else if (res.wind.deg > 270 && res.wind.deg < 360){
-			    					weather += "<li> Wind Direction: South-West </li>";
-			    				}
-		    				
-		    				weather += "<li> Humidity: " + res.main.humidity + "% </li>";
-		    				weather += "</ul>"
-		    				weather += "<br><hr><br>"
-
-		    				console.log("Printing results...");
-		    				console.log(weather);
-		    				$('#weather').html(weather);
-		    			}, "JSON");
-	    			return false;
-	    			console.log("Ending API call...")
-    			});
-        	});
+			    				console.log("Printing results...");
+			    				console.log(weather);
+			    				$('#weather').html(weather);
+			    			}, "JSON");
+		    			return false;
+		    			console.log("Ending API call...")
+	    			});
+	        	});
+			}
 	    </script>
 	    
 
@@ -165,7 +166,7 @@
 			    <!-- Collect the nav links, forms, and other content for toggling -->
 			      <form class="navbar-form navbar-left" role="search">
 			        <div class="form-group">
-			          <input type="text" id='city' placeholder="City">
+			          <input onclick=lazyLoad() type="text" id='city' placeholder="City">
 			          <select id="countries" name="countries" placeholder="Country">
 			          		<option value="US">United States</option>
 							<option value="AF">Afghanistan</option>
